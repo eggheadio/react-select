@@ -2255,6 +2255,23 @@ describe('Select', () => {
 			});
 		});
 
+		describe('clearRenderer', () => {
+
+			beforeEach(() => {
+				instance = createControl({
+					clearable: true,
+					value: 'three',
+					clearRenderer: () => <span className="Select-custom-clear">O</span>,
+					options: defaultOptions
+				});
+			});
+
+			it('renders a custom clear', () => {
+
+				expect(instance, 'to contain', <span className="Select-custom-clear">O</span>);
+			});
+		});
+
 		describe('clearValueText', () => {
 
 			beforeEach(() => {
@@ -3786,6 +3803,19 @@ describe('Select', () => {
 					'to contain', <input role="combobox" aria-labelledby="test-label-id" />);
 			});
 
+			it('passes through the aria-describedby prop', () => {
+
+				instance = createControl({
+					options: defaultOptions,
+					value: 'one',
+					'aria-describedby': 'test-label1-id test-label2-id'
+				});
+
+				expect(instance,
+					'to contain', <input role="combobox" aria-describedby="test-label1-id test-label2-id" />);
+			});
+
+
 			it('passes through the aria-label prop', () => {
 
 				instance = createControl({
@@ -3861,6 +3891,19 @@ describe('Select', () => {
 					});
 
 			});
+		});
+	});
+
+	describe('.focus()', () => {
+		beforeEach(() => {
+			instance = createControl({});
+		});
+
+		it('focuses the search input', () => {
+			var input = ReactDOM.findDOMNode(instance.input).querySelector('input');
+			expect(input, 'not to equal', document.activeElement);
+			instance.focus();
+			expect(input, 'to equal', document.activeElement);
 		});
 	});
 });
